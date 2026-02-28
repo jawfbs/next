@@ -1,39 +1,20 @@
-import Link from "next/link"
+tsx
+export default async function Home() {
+  const res = await fetch('http://localhost:3000/api/listings')
+  const listings = await res.json()
 
-import { siteConfig } from "@/config/site"
-import { buttonVariants } from "@/components/ui/button"
-
-export default function IndexPage() {
   return (
-    <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
-      <div className="flex max-w-[980px] flex-col items-start gap-2">
-        <h1 className="text-3xl font-extrabold leading-tight tracking-tighter md:text-4xl">
-          Beautifully designed components <br className="hidden sm:inline" />
-          built with Radix UI and Tailwind CSS.
-        </h1>
-        <p className="max-w-[700px] text-lg text-muted-foreground">
-          Accessible and customizable components that you can copy and paste
-          into your apps. Free. Open Source. And Next.js 13 Ready.
-        </p>
+    <main className="p-8">
+      <h1 className="text-3xl font-bold mb-6">Available Properties</h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {listings.map((l: any) => (
+          <div key={l.id} className="border rounded-xl shadow p-4">
+            <h2 className="font-semibold text-lg">{l.address}</h2>
+            <p className="text-green-600 font-bold">{l.price}</p>
+            <p className="text-sm text-gray-500">{l.beds} bed · {l.baths} bath</p>
+          </div>
+        ))}
       </div>
-      <div className="flex gap-4">
-        <Link
-          href={siteConfig.links.docs}
-          target="_blank"
-          rel="noreferrer"
-          className={buttonVariants()}
-        >
-          Documentation
-        </Link>
-        <Link
-          target="_blank"
-          rel="noreferrer"
-          href={siteConfig.links.github}
-          className={buttonVariants({ variant: "outline" })}
-        >
-          GitHub
-        </Link>
-      </div>
-    </section>
+    </main>
   )
 }
